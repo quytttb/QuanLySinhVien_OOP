@@ -1,0 +1,82 @@
+[
+  {
+    "maSV": "SV001",
+    "diemToan": 8.5,
+    "diemVan": 7,
+    "diemAnh": 9,
+    "hoTen": "Nguy\u1EC5n V\u0103n An",
+    "ngaySinh": "2003-03-15T00:00:00"
+  },
+  {
+    "maSV": "SV002",
+    "diemToan": 9,
+    "diemVan": 8.5,
+    "diemAnh": 8,
+    "hoTen": "Tr\u1EA7n Th\u1ECB B\u00ECnh",
+    "ngaySinh": "2002-07-22T00:00:00"
+  },
+  {
+    "maSV": "SV003",
+    "diemToan": 6.5,
+    "diemVan": 7.5,
+    "diemAnh": 7,
+    "hoTen": "L\u00EA Ho\u00E0ng C\u01B0\u1EDDng",
+    "ngaySinh": "2003-01-10T00:00:00"
+  },
+  {
+    "maSV": "SV004",
+    "diemToan": 7,
+    "diemVan": 6,
+    "diemAnh": 8.5,
+    "hoTen": "Ph\u1EA1m Minh \u0110\u1EE9c",
+    "ngaySinh": "2002-11-05T00:00:00"
+  },
+  {
+    "maSV": "SV005",
+    "diemToan": 9.5,
+    "diemVan": 9,
+    "diemAnh": 9.5,
+    "hoTen": "Ho\u00E0ng Th\u1ECB Hoa",
+    "ngaySinh": "2003-05-18T00:00:00"
+  },
+  {
+    "maSV": "SV006",
+    "diemToan": 5.5,
+    "diemVan": 6.5,
+    "diemAnh": 6,
+    "hoTen": "V\u00F5 Quang H\u00F9ng",
+    "ngaySinh": "2002-09-30T00:00:00"
+  },
+  {
+    "maSV": "SV007",
+    "diemToan": 8,
+    "diemVan": 8.5,
+    "diemAnh": 7.5,
+    "hoTen": "\u0110\u1EB7ng Th\u1ECB Lan",
+    "ngaySinh": "2003-02-14T00:00:00"
+  },
+  {
+    "maSV": "SV008",
+    "diemToan": 7.5,
+    "diemVan": 7,
+    "diemAnh": 8,
+    "hoTen": "B\u00F9i V\u0103n Minh",
+    "ngaySinh": "2002-08-08T00:00:00"
+  },
+  {
+    "maSV": "SV009",
+    "diemToan": 6,
+    "diemVan": 5.5,
+    "diemAnh": 7,
+    "hoTen": "Ng\u00F4 Th\u1ECB Ng\u1ECDc",
+    "ngaySinh": "2003-12-25T00:00:00"
+  },
+  {
+    "maSV": "SV010",
+    "diemToan": 8,
+    "diemVan": 9,
+    "diemAnh": 8.5,
+    "hoTen": "Tr\u1ECBnh Qu\u1ED1c Phong",
+    "ngaySinh": "2002-04-01T00:00:00"
+  }
+]
