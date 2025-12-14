@@ -9,199 +9,136 @@
 <PageTitle>@(IsEditMode ? "Sửa Sinh viên" : "Thêm Sinh viên")</PageTitle>
 
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
-            <div class="card shadow">
-                <div class="card-header @(IsEditMode ? "bg-warning" : "bg-success") text-white">
-                    <h4 class="mb-0">
-                        <i class="bi @(IsEditMode ? "bi-pencil-square" : "bi-person-plus")"></i>
-                        @(IsEditMode ? "Sửa thông tin Sinh viên" : "Thêm Sinh viên mới")
-                    </h4>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>@(IsEditMode ? "Sửa thông tin Sinh viên" : "Thêm Sinh viên mới")</h3>
+            <hr />
+
+            @if (isLoading)
+            {
+                <p><em>Đang tải...</em></p>
+            }
+            else if (student == null)
+            {
+                <div class="alert alert-danger">
+                    Không tìm thấy sinh viên với mã "@MaSV"
                 </div>
-                <div class="card-body">
-                    @if (isLoading)
-                    {
-                        <div class="text-center py-4">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">Đang tải...</span>
-                            </div>
+                <button class="btn btn-secondary" @onclick="NavigateBack">
+                    Quay lại
+                </button>
+            }
+            else
+            {
+                @if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    <div class="alert alert-danger">
+                        @errorMessage
+                    </div>
+                }
+
+                <EditForm Model="student" OnValidSubmit="HandleValidSubmit">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary class="text-danger" />
+
+                    <!-- Mã sinh viên -->
+                    <div class="mb-3">
+                        <label for="maSV" class="form-label">Mã sinh viên *</label>
+                        <InputText id="maSV" 
+                                   class="form-control" 
+                                   @bind-Value="student.MaSV" 
+                                   placeholder="VD: SV001"
+                                   disabled="@IsEditMode" />
+                        <ValidationMessage For="@(() => student.MaSV)" class="text-danger" />
+                    </div>
+
+                    <!-- Họ tên -->
+                    <div class="mb-3">
+                        <label for="hoTen" class="form-label">Họ và tên *</label>
+                        <InputText id="hoTen" 
+                                   class="form-control" 
+                                   @bind-Value="student.HoTen" 
+                                   placeholder="Nhập họ và tên" />
+                        <ValidationMessage For="@(() => student.HoTen)" class="text-danger" />
+                    </div>
+
+                    <!-- Ngày sinh -->
+                    <div class="mb-3">
+                        <label for="ngaySinh" class="form-label">Ngày sinh *</label>
+                        <InputDate id="ngaySinh" 
+                                   class="form-control" 
+                                   @bind-Value="student.NgaySinh" />
+                        <ValidationMessage For="@(() => student.NgaySinh)" class="text-danger" />
+                    </div>
+
+                    <!-- Điểm các môn -->
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="diemToan" class="form-label">Điểm Toán *</label>
+                            <InputNumber id="diemToan" 
+                                         class="form-control" 
+                                         @bind-Value="student.DiemToan"
+                                         min="0" max="10" step="0.1" />
+                            <ValidationMessage For="@(() => student.DiemToan)" class="text-danger" />
                         </div>
-                    }
-                    else if (student == null)
-                    {
-                        <div class="alert alert-danger">
-                            <i class="bi bi-exclamation-triangle"></i>
-                            Không tìm thấy sinh viên với mã "@MaSV"
+                        <div class="col-md-4 mb-3">
+                            <label for="diemVan" class="form-label">Điểm Văn *</label>
+                            <InputNumber id="diemVan" 
+                                         class="form-control" 
+                                         @bind-Value="student.DiemVan"
+                                         min="0" max="10" step="0.1" />
+                            <ValidationMessage For="@(() => student.DiemVan)" class="text-danger" />
                         </div>
-                        <button class="btn btn-secondary" @onclick="NavigateBack">
-                            <i class="bi bi-arrow-left"></i> Quay lại
+                        <div class="col-md-4 mb-3">
+                            <label for="diemAnh" class="form-label">Điểm Anh *</label>
+                            <InputNumber id="diemAnh" 
+                                         class="form-control" 
+                                         @bind-Value="student.DiemAnh"
+                                         min="0" max="10" step="0.1" />
+                            <ValidationMessage For="@(() => student.DiemAnh)" class="text-danger" />
+                        </div>
+                    </div>
+
+                    <!-- Điểm TB preview -->
+                    <div class="mb-3 p-2 bg-light">
+                        <strong>Điểm trung bình:</strong> @student.TinhDiemTB().ToString("F2")
+                    </div>
+
+                    <!-- Nút thao tác -->
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-primary" disabled="@isSaving">
+                            @(isSaving ? "Đang lưu..." : (IsEditMode ? "Cập nhật" : "Lưu"))
                         </button>
-                    }
-                    else
-                    {
-                        <!-- Thông báo lỗi -->
-                        @if (!string.IsNullOrEmpty(errorMessage))
-                        {
-                            <div class="alert alert-danger alert-dismissible fade show">
-                                <i class="bi bi-exclamation-circle"></i> @errorMessage
-                                <button type="button" class="btn-close" @onclick="() => errorMessage = string.Empty"></button>
-                            </div>
-                        }
-
-                        <EditForm Model="student" OnValidSubmit="HandleValidSubmit" FormName="studentForm">
-                            <DataAnnotationsValidator />
-                            <ValidationSummary class="text-danger mb-3" />
-
-                            <!-- Mã sinh viên -->
-                            <div class="mb-3">
-                                <label for="maSV" class="form-label fw-bold">
-                                    <i class="bi bi-hash"></i> Mã sinh viên <span class="text-danger">*</span>
-                                </label>
-                                <InputText id="maSV" 
-                                           class="form-control" 
-                                           @bind-Value="student.MaSV" 
-                                           placeholder="Nhập mã sinh viên (VD: SV001)"
-                                           disabled="@IsEditMode" />
-                                <ValidationMessage For="@(() => student.MaSV)" class="text-danger" />
-                                @if (IsEditMode)
-                                {
-                                    <small class="text-muted">Mã SV không thể thay đổi khi sửa</small>
-                                }
-                            </div>
-
-                            <!-- Họ tên -->
-                            <div class="mb-3">
-                                <label for="hoTen" class="form-label fw-bold">
-                                    <i class="bi bi-person"></i> Họ và tên <span class="text-danger">*</span>
-                                </label>
-                                <InputText id="hoTen" 
-                                           class="form-control" 
-                                           @bind-Value="student.HoTen" 
-                                           placeholder="Nhập họ và tên đầy đủ" />
-                                <ValidationMessage For="@(() => student.HoTen)" class="text-danger" />
-                            </div>
-
-                            <!-- Ngày sinh -->
-                            <div class="mb-3">
-                                <label for="ngaySinh" class="form-label fw-bold">
-                                    <i class="bi bi-calendar"></i> Ngày sinh <span class="text-danger">*</span>
-                                </label>
-                                <InputDate id="ngaySinh" 
-                                           class="form-control" 
-                                           @bind-Value="student.NgaySinh" />
-                                <ValidationMessage For="@(() => student.NgaySinh)" class="text-danger" />
-                            </div>
-
-                            <!-- Điểm các môn -->
-                            <div class="row">
-                                <div class="col-md-4 mb-3">
-                                    <label for="diemToan" class="form-label fw-bold">
-                                        <i class="bi bi-calculator"></i> Điểm Toán <span class="text-danger">*</span>
-                                    </label>
-                                    <InputNumber id="diemToan" 
-                                                 class="form-control text-center" 
-                                                 @bind-Value="student.DiemToan"
-                                                 min="0" max="10" step="0.1" />
-                                    <ValidationMessage For="@(() => student.DiemToan)" class="text-danger" />
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label for="diemVan" class="form-label fw-bold">
-                                        <i class="bi bi-book"></i> Điểm Văn <span class="text-danger">*</span>
-                                    </label>
-                                    <InputNumber id="diemVan" 
-                                                 class="form-control text-center" 
-                                                 @bind-Value="student.DiemVan"
-                                                 min="0" max="10" step="0.1" />
-                                    <ValidationMessage For="@(() => student.DiemVan)" class="text-danger" />
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label for="diemAnh" class="form-label fw-bold">
-                                        <i class="bi bi-translate"></i> Điểm Anh <span class="text-danger">*</span>
-                                    </label>
-                                    <InputNumber id="diemAnh" 
-                                                 class="form-control text-center" 
-                                                 @bind-Value="student.DiemAnh"
-                                                 min="0" max="10" step="0.1" />
-                                    <ValidationMessage For="@(() => student.DiemAnh)" class="text-danger" />
-                                </div>
-                            </div>
-
-                            <!-- Hiển thị điểm TB preview -->
-                            <div class="mb-4 p-3 bg-light rounded">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <strong>Điểm trung bình (preview):</strong>
-                                    </div>
-                                    <div class="col-auto">
-                                        <span class="badge @GetDiemTBClass(student.TinhDiemTB()) fs-5">
-                                            @student.TinhDiemTB().ToString("F2")
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Nút thao tác -->
-                            <div class="d-flex justify-content-between">
-                                <button type="button" class="btn btn-secondary" @onclick="NavigateBack">
-                                    <i class="bi bi-arrow-left"></i> Quay lại
-                                </button>
-                                <button type="submit" class="btn @(IsEditMode ? "btn-warning" : "btn-success")" 
-                                        disabled="@isSaving">
-                                    @if (isSaving)
-                                    {
-                                        <span class="spinner-border spinner-border-sm" role="status"></span>
-                                        <span> Đang lưu...</span>
-                                    }
-                                    else
-                                    {
-                                        <i class="bi bi-check-lg"></i>
-                                        <span>@(IsEditMode ? " Cập nhật" : " Lưu")</span>
-                                    }
-                                </button>
-                            </div>
-                        </EditForm>
-                    }
-                </div>
-            </div>
+                        <button type="button" class="btn btn-secondary" @onclick="NavigateBack">
+                            Quay lại
+                        </button>
+                    </div>
+                </EditForm>
+            }
         </div>
     </div>
 </div>
 
 @code {
-    // Route parameter - nếu có thì là mode sửa
     [Parameter]
     public string? MaSV { get; set; }
 
-    // Model sinh viên
     private Student? student;
-
-    // Trạng thái
     private bool isLoading = true;
     private bool isSaving = false;
     private string errorMessage = string.Empty;
 
-    // Kiểm tra mode thêm/sửa
     private bool IsEditMode => !string.IsNullOrEmpty(MaSV);
 
-    /// <summary>
-    /// Khởi tạo component
-    /// </summary>
     protected override async Task OnInitializedAsync()
     {
         await LoadDataAsync();
     }
 
-    /// <summary>
-    /// Khi parameter thay đổi (navigate giữa add/edit)
-    /// </summary>
     protected override async Task OnParametersSetAsync()
     {
         await LoadDataAsync();
     }
 
-    /// <summary>
-    /// Load dữ liệu sinh viên (nếu là mode sửa)
-    /// </summary>
     private async Task LoadDataAsync()
     {
         isLoading = true;
@@ -211,11 +148,9 @@
         {
             if (IsEditMode)
             {
-                // Mode sửa: load thông tin sinh viên
                 var existingStudent = await StudentService.GetStudentByIdAsync(MaSV!);
                 if (existingStudent != null)
                 {
-                    // Tạo bản sao để edit
                     student = new Student
                     {
                         MaSV = existingStudent.MaSV,
@@ -233,10 +168,9 @@
             }
             else
             {
-                // Mode thêm: tạo sinh viên mới với giá trị mặc định
                 student = new Student
                 {
-                    NgaySinh = DateTime.Now.AddYears(-18), // Mặc định 18 tuổi
+                    NgaySinh = DateTime.Now.AddYears(-18),
                     DiemToan = 0,
                     DiemVan = 0,
                     DiemAnh = 0
@@ -245,7 +179,7 @@
         }
         catch (Exception ex)
         {
-            errorMessage = $"Lỗi tải dữ liệu: {ex.Message}";
+            errorMessage = $"Lỗi: {ex.Message}";
             student = null;
         }
         finally
@@ -254,9 +188,6 @@
         }
     }
 
-    /// <summary>
-    /// Xử lý khi form hợp lệ và submit
-    /// </summary>
     private async Task HandleValidSubmit()
     {
         if (student == null) return;
@@ -268,29 +199,23 @@
         {
             if (IsEditMode)
             {
-                // Cập nhật sinh viên
                 await StudentService.UpdateStudentAsync(student);
             }
             else
             {
-                // Kiểm tra mã SV trùng trước khi thêm
                 if (await StudentService.IsMaSVExistsAsync(student.MaSV))
                 {
-                    errorMessage = $"Mã sinh viên '{student.MaSV}' đã tồn tại! Vui lòng chọn mã khác.";
+                    errorMessage = $"Mã sinh viên '{student.MaSV}' đã tồn tại!";
                     isSaving = false;
                     return;
                 }
-
-                // Thêm sinh viên mới
                 await StudentService.AddStudentAsync(student);
             }
-
-            // Thành công - quay lại trang danh sách
             Navigation.NavigateTo("/");
         }
         catch (Exception ex)
         {
-            errorMessage = $"Lỗi lưu dữ liệu: {ex.Message}";
+            errorMessage = $"Lỗi: {ex.Message}";
         }
         finally
         {
@@ -298,25 +223,8 @@
         }
     }
 
-    /// <summary>
-    /// Quay lại trang danh sách
-    /// </summary>
     private void NavigateBack()
     {
         Navigation.NavigateTo("/");
-    }
-
-    /// <summary>
-    /// Lấy class CSS cho badge điểm TB
-    /// </summary>
-    private string GetDiemTBClass(double diemTB)
-    {
-        return diemTB switch
-        {
-            >= 8.0 => "bg-success",
-            >= 6.5 => "bg-primary",
-            >= 5.0 => "bg-warning text-dark",
-            _ => "bg-danger"
-        };
     }
 }

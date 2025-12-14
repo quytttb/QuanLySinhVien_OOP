@@ -8,36 +8,21 @@
 <PageTitle>Quản lý Sinh viên</PageTitle>
 
 <div class="container-fluid">
-    <h1 class="text-primary mb-4">
-        <i class="bi bi-people-fill"></i> Quản lý Sinh viên
-    </h1>
+    <h2 class="mb-3">Quản lý Sinh viên</h2>
 
     <!-- Thanh công cụ: Tìm kiếm và Thêm mới -->
-    <div class="row mb-4">
+    <div class="row mb-3">
         <div class="col-md-6">
-            <div class="input-group">
-                <span class="input-group-text bg-primary text-white">
-                    <i class="bi bi-search"></i>
-                </span>
-                <input type="text" 
-                       class="form-control" 
-                       placeholder="Tìm kiếm theo mã SV hoặc họ tên..." 
-                       @bind="searchKeyword"
-                       @bind:event="oninput"
-                       @onkeyup="OnSearchAsync" />
-                @if (!string.IsNullOrEmpty(searchKeyword))
-                {
-                    <button class="btn btn-outline-secondary" 
-                            type="button" 
-                            @onclick="ClearSearch">
-                        <i class="bi bi-x-lg"></i>
-                    </button>
-                }
-            </div>
+            <input type="text" 
+                   class="form-control" 
+                   placeholder="Tìm kiếm theo mã SV hoặc họ tên..." 
+                   @bind="searchKeyword"
+                   @bind:event="oninput"
+                   @onkeyup="OnSearchAsync" />
         </div>
         <div class="col-md-6 text-end">
-            <button class="btn btn-success" @onclick="NavigateToAdd">
-                <i class="bi bi-plus-circle"></i> Thêm Sinh viên
+            <button class="btn btn-primary" @onclick="NavigateToAdd">
+                + Thêm Sinh viên
             </button>
         </div>
     </div>
@@ -45,7 +30,7 @@
     <!-- Thông báo -->
     @if (!string.IsNullOrEmpty(message))
     {
-        <div class="alert @(isError ? "alert-danger" : "alert-success") alert-dismissible fade show" role="alert">
+        <div class="alert @(isError ? "alert-danger" : "alert-success") alert-dismissible" role="alert">
             @message
             <button type="button" class="btn-close" @onclick="ClearMessage"></button>
         </div>
@@ -54,17 +39,11 @@
     <!-- Bảng danh sách sinh viên -->
     @if (isLoading)
     {
-        <div class="text-center py-5">
-            <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Đang tải...</span>
-            </div>
-            <p class="mt-2 text-muted">Đang tải dữ liệu...</p>
-        </div>
+        <p><em>Đang tải dữ liệu...</em></p>
     }
     else if (students == null || !students.Any())
     {
-        <div class="alert alert-info text-center">
-            <i class="bi bi-info-circle"></i>
+        <div class="alert alert-info">
             @if (string.IsNullOrEmpty(searchKeyword))
             {
                 <span>Chưa có sinh viên nào. Hãy thêm sinh viên mới!</span>
@@ -77,90 +56,79 @@
     }
     else
     {
-        <div class="table-responsive">
-            <table class="table table-striped table-hover table-bordered align-middle">
-                <thead class="table-primary">
-                    <tr class="text-center">
-                        <th style="width: 50px;">STT</th>
-                        <th style="width: 120px;">Mã SV</th>
-                        <th>Họ tên</th>
-                        <th style="width: 120px;">Ngày sinh</th>
-                        <th style="width: 80px;">Toán</th>
-                        <th style="width: 80px;">Văn</th>
-                        <th style="width: 80px;">Anh</th>
-                        <th style="width: 80px;">ĐTB</th>
-                        <th style="width: 150px;">Thao tác</th>
+        <table class="table table-striped table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th>STT</th>
+                    <th>Mã SV</th>
+                    <th>Họ tên</th>
+                    <th>Ngày sinh</th>
+                    <th>Toán</th>
+                    <th>Văn</th>
+                    <th>Anh</th>
+                    <th>ĐTB</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ var stt = 1; }
+                @foreach (var sv in students)
+                {
+                    <tr>
+                        <td>@(stt++)</td>
+                        <td><strong>@sv.MaSV</strong></td>
+                        <td>@sv.HoTen</td>
+                        <td>@sv.NgaySinh.ToString("dd/MM/yyyy")</td>
+                        <td>@sv.DiemToan.ToString("F1")</td>
+                        <td>@sv.DiemVan.ToString("F1")</td>
+                        <td>@sv.DiemAnh.ToString("F1")</td>
+                        <td>
+                            <span class="badge @GetDiemTBClass(sv.TinhDiemTB())">
+                                @sv.TinhDiemTB().ToString("F2")
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-warning" 
+                                    @onclick="() => NavigateToEdit(sv.MaSV)">
+                                Sửa
+                            </button>
+                            <button class="btn btn-sm btn-danger" 
+                                    @onclick="() => ConfirmDelete(sv)">
+                                Xóa
+                            </button>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @{ var stt = 1; }
-                    @foreach (var sv in students)
-                    {
-                        <tr>
-                            <td class="text-center">@(stt++)</td>
-                            <td class="text-center fw-bold">@sv.MaSV</td>
-                            <td>@sv.HoTen</td>
-                            <td class="text-center">@sv.NgaySinh.ToString("dd/MM/yyyy")</td>
-                            <td class="text-center">@sv.DiemToan.ToString("F1")</td>
-                            <td class="text-center">@sv.DiemVan.ToString("F1")</td>
-                            <td class="text-center">@sv.DiemAnh.ToString("F1")</td>
-                            <td class="text-center">
-                                <span class="badge @GetDiemTBClass(sv.TinhDiemTB())">
-                                    @sv.TinhDiemTB().ToString("F2")
-                                </span>
-                            </td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-warning me-1" 
-                                        @onclick="() => NavigateToEdit(sv.MaSV)"
-                                        title="Sửa">
-                                    <i class="bi bi-pencil"></i> Sửa
-                                </button>
-                                <button class="btn btn-sm btn-danger" 
-                                        @onclick="() => ConfirmDelete(sv)"
-                                        title="Xóa">
-                                    <i class="bi bi-trash"></i> Xóa
-                                </button>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+                }
+            </tbody>
+        </table>
         
-        <div class="text-muted">
-            <small>Tổng số: <strong>@students.Count</strong> sinh viên</small>
-        </div>
+        <p class="text-muted">Tổng số: <strong>@students.Count</strong> sinh viên</p>
     }
 
     <!-- Modal xác nhận xóa -->
     @if (showDeleteModal && studentToDelete != null)
     {
         <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
-            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header bg-danger text-white">
-                        <h5 class="modal-title">
-                            <i class="bi bi-exclamation-triangle"></i> Xác nhận xóa
-                        </h5>
-                        <button type="button" class="btn-close btn-close-white" 
-                                @onclick="CancelDelete"></button>
+                    <div class="modal-header">
+                        <h5 class="modal-title">Xác nhận xóa</h5>
+                        <button type="button" class="btn-close" @onclick="CancelDelete"></button>
                     </div>
                     <div class="modal-body">
                         <p>Bạn có chắc chắn muốn xóa sinh viên này?</p>
-                        <div class="card">
-                            <div class="card-body">
-                                <strong>Mã SV:</strong> @studentToDelete.MaSV<br/>
-                                <strong>Họ tên:</strong> @studentToDelete.HoTen<br/>
-                                <strong>ĐTB:</strong> @studentToDelete.TinhDiemTB().ToString("F2")
-                            </div>
-                        </div>
+                        <ul>
+                            <li><strong>Mã SV:</strong> @studentToDelete.MaSV</li>
+                            <li><strong>Họ tên:</strong> @studentToDelete.HoTen</li>
+                            <li><strong>ĐTB:</strong> @studentToDelete.TinhDiemTB().ToString("F2")</li>
+                        </ul>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" @onclick="CancelDelete">
-                            <i class="bi bi-x-lg"></i> Hủy
+                            Hủy
                         </button>
                         <button type="button" class="btn btn-danger" @onclick="DeleteStudentAsync">
-                            <i class="bi bi-trash"></i> Xóa
+                            Xóa
                         </button>
                     </div>
                 </div>
@@ -170,34 +138,19 @@
 </div>
 
 @code {
-    // Danh sách sinh viên hiển thị
     private List<Student>? students;
-    
-    // Từ khóa tìm kiếm
     private string searchKeyword = string.Empty;
-    
-    // Trạng thái loading
     private bool isLoading = true;
-    
-    // Thông báo
     private string message = string.Empty;
     private bool isError = false;
-    
-    // Modal xóa
     private bool showDeleteModal = false;
     private Student? studentToDelete;
 
-    /// <summary>
-    /// Khởi tạo component - load danh sách sinh viên
-    /// </summary>
     protected override async Task OnInitializedAsync()
     {
         await LoadStudentsAsync();
     }
 
-    /// <summary>
-    /// Load danh sách sinh viên từ service
-    /// </summary>
     private async Task LoadStudentsAsync()
     {
         isLoading = true;
@@ -216,9 +169,6 @@
         }
     }
 
-    /// <summary>
-    /// Xử lý tìm kiếm realtime
-    /// </summary>
     private async Task OnSearchAsync()
     {
         try
@@ -238,52 +188,28 @@
         }
     }
 
-    /// <summary>
-    /// Xóa từ khóa tìm kiếm
-    /// </summary>
-    private async Task ClearSearch()
-    {
-        searchKeyword = string.Empty;
-        await LoadStudentsAsync();
-    }
-
-    /// <summary>
-    /// Chuyển đến trang thêm sinh viên
-    /// </summary>
     private void NavigateToAdd()
     {
         Navigation.NavigateTo("/student/add");
     }
 
-    /// <summary>
-    /// Chuyển đến trang sửa sinh viên
-    /// </summary>
     private void NavigateToEdit(string maSV)
     {
         Navigation.NavigateTo($"/student/edit/{maSV}");
     }
 
-    /// <summary>
-    /// Hiển thị modal xác nhận xóa
-    /// </summary>
     private void ConfirmDelete(Student sv)
     {
         studentToDelete = sv;
         showDeleteModal = true;
     }
 
-    /// <summary>
-    /// Hủy xóa
-    /// </summary>
     private void CancelDelete()
     {
         studentToDelete = null;
         showDeleteModal = false;
     }
 
-    /// <summary>
-    /// Xóa sinh viên sau khi xác nhận
-    /// </summary>
     private async Task DeleteStudentAsync()
     {
         if (studentToDelete == null) return;
@@ -304,26 +230,17 @@
         }
     }
 
-    /// <summary>
-    /// Hiển thị thông báo
-    /// </summary>
     private void ShowMessage(string msg, bool error)
     {
         message = msg;
         isError = error;
     }
 
-    /// <summary>
-    /// Xóa thông báo
-    /// </summary>
     private void ClearMessage()
     {
         message = string.Empty;
     }
 
-    /// <summary>
-    /// Lấy class CSS cho badge điểm TB
-    /// </summary>
     private string GetDiemTBClass(double diemTB)
     {
         return diemTB switch

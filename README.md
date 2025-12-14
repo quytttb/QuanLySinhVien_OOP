@@ -1,26 +1,26 @@
-# 🎓 Quản Lý Sinh Viên - OOP
+# Quản Lý Sinh Viên - OOP
 
 Hệ thống quản lý sinh viên được xây dựng bằng **Blazor Web App (.NET 10.0)**, áp dụng đầy đủ 4 nguyên lý OOP.
 
-## 📋 Mô tả
+## Mô tả
 
 Ứng dụng web quản lý danh sách sinh viên với các chức năng:
-- ✅ **Thêm** sinh viên mới
-- ✅ **Sửa** thông tin sinh viên
-- ✅ **Xóa** sinh viên (có xác nhận)
-- ✅ **Tìm kiếm** realtime theo mã SV hoặc họ tên
-- ✅ **Tính điểm trung bình** tự động
-- ✅ **Lưu trữ** dữ liệu vào file JSON
-- ✅ **Seed data** - tạo dữ liệu mẫu
+- **Thêm** sinh viên mới
+- **Sửa** thông tin sinh viên
+- **Xóa** sinh viên (có xác nhận)
+- **Tìm kiếm** realtime theo mã SV hoặc họ tên
+- **Tính điểm trung bình** tự động
+- **Lưu trữ** dữ liệu vào file JSON
+- **Seed data** - tạo dữ liệu mẫu
 
-## 🏗️ Công nghệ
+## Công nghệ
 
 - **.NET 10.0**
 - **Blazor Web App** (Interactive Server)
 - **Bootstrap 5** (UI Framework)
 - **System.Text.Json** (Lưu trữ dữ liệu)
 
-## 📁 Cấu trúc Project
+## Cấu trúc Project
 
 ```
 QuanLySinhVien_OOP/
@@ -45,7 +45,7 @@ QuanLySinhVien_OOP/
     └── favicon.svg                  # Icon sinh viên
 ```
 
-## 🎯 Áp dụng 4 Nguyên lý OOP
+## Áp dụng 4 Nguyên lý OOP
 
 | Nguyên lý | Áp dụng trong Project |
 |-----------|----------------------|
@@ -54,7 +54,7 @@ QuanLySinhVien_OOP/
 | **Polymorphism** (Đa hình) | - `override ToDisplayString()` trong Student<br>- Ghi đè phương thức của lớp cha<br>- Hiển thị thông tin khác nhau tùy lớp |
 | **Abstraction** (Trừu tượng) | - Interface `IStudentService`<br>- Tách biệt contract và implementation<br>- Dependency Injection với interface |
 
-## 🚀 Hướng dẫn Cài đặt
+## Hướng dẫn Cài đặt
 
 ### Yêu cầu
 - [.NET 10.0 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) trở lên
@@ -95,7 +95,7 @@ QuanLySinhVien_OOP/
    http://localhost:5241
    ```
 
-## 💡 Sử dụng
+## Sử dụng
 
 ### Trang chủ - Danh sách Sinh viên
 - Xem danh sách toàn bộ sinh viên với điểm TB
@@ -115,7 +115,7 @@ QuanLySinhVien_OOP/
 - Tự động load khi khởi động ứng dụng
 - Có thể seed lại dữ liệu mẫu bằng flag `--seed`
 
-## 📊 Dữ liệu mẫu (Seed)
+## Dữ liệu mẫu (Seed)
 
 Chạy với flag `--seed` sẽ tạo 10 sinh viên:
 - Mã SV: SV001 - SV010
@@ -123,19 +123,19 @@ Chạy với flag `--seed` sẽ tạo 10 sinh viên:
 - Điểm các môn từ 5.0 - 9.5
 - Ngày sinh từ năm 2002-2003
 
-## 🎨 Giao diện
+## Giao diện
 
 - **Bootstrap 5** responsive design
 - **Bootstrap Icons** cho icon đẹp mắt
 - **Badge màu** hiển thị điểm TB theo thang:
-  - 🟢 Xanh lá (≥8.0): Giỏi
-  - 🔵 Xanh dương (≥6.5): Khá
-  - 🟡 Vàng (≥5.0): Trung bình
-  - 🔴 Đỏ (<5.0): Yếu
+  - Xanh lá (≥8.0): Giỏi
+  - Xanh dương (≥6.5): Khá
+  - Vàng (≥5.0): Trung bình
+  - Đỏ (<5.0): Yếu
 - **Modal xác nhận** khi xóa
 - **Form validation** với thông báo lỗi rõ ràng
 
-## 📝 Tính năng nâng cao
+## Tính năng nâng cao
 
 - **Thread-safe**: Sử dụng `SemaphoreSlim` cho đọc/ghi file
 - **Singleton Service**: Giữ dữ liệu trong bộ nhớ
@@ -143,7 +143,7 @@ Chạy với flag `--seed` sẽ tạo 10 sinh viên:
 - **Error handling**: Xử lý lỗi đầy đủ với try-catch
 - **Input validation**: Kiểm tra dữ liệu ở cả client và server
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 **Port đã được sử dụng?**
 ```bash
@@ -159,14 +159,14 @@ rm QuanLySinhVien_OOP/Data/students.json
 dotnet run -- --seed
 ```
 
-## 👨‍💻 Tác giả
+## Tác giả
 
 Phát triển bởi **Quý** cho môn Lập trình Hướng đối tượng
 
-## 📄 License
+## License
 
 MIT License - Tự do sử dụng cho mục đích học tập
 
 ---
 
-⭐ **Star** repo này nếu bạn thấy hữu ích!
+**Star** repo này nếu bạn thấy hữu ích!

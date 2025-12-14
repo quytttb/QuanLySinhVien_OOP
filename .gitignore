@@ -92,6 +92,21 @@ PublishProfiles/
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
 
-# Data files (keep empty folder structure but not the actual data)
-# Uncomment if you don't want to commit student data
-# Data/*.json
+# Data files - ignore all JSON data files
+Data/students.json
+**/Data/*.json
+
+# User data and database files
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Static web assets
+wwwroot/lib/
+staticwebassets/
+
+# Application settings with secrets
+appsettings.Local.json
+appsettings.*.Local.json
